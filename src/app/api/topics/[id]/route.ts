@@ -23,16 +23,15 @@ export async function GET(
     const topic = await prisma.topic.findUnique({
       where: {
         id,
-        userId: session.user.id,
       },
       include: {
         chatrooms: true,
       },
     });
 
-    if (!topic) {
+    if (!topic || topic.userId !== session.user.id) {
       return NextResponse.json(
-        { message: "Topic not found" },
+        { message: "Topic not found or unauthorized" },
         { status: 404 }
       );
     }
