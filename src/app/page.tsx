@@ -1,54 +1,46 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
-import Link from "next/link";
+import Link from 'next/link';
 
-export default async function Home() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    redirect("/auth/signin");
-  }
-
+export default function Home() {
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "2rem 1rem" }}>
-      <h1 style={{ fontSize: "1.875rem", fontWeight: "bold", marginBottom: "1.5rem" }}>
-        Welcome, {session.user.name}
-      </h1>
-      
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1.5rem" }}>
-        <Link 
-          href="/topics" 
-          style={{ 
-            backgroundColor: "white", 
-            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-            borderRadius: "0.5rem",
-            padding: "1.5rem",
-            transition: "box-shadow 0.3s ease"
-          }}
-        >
-          <h2 style={{ fontSize: "1.25rem", fontWeight: "600", marginBottom: "1rem" }}>Manage Topics</h2>
-          <p style={{ color: "#6B7280" }}>
-            Create, view, and manage your topics and chatrooms
+    <div className="full-height bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
+      <main className="container mx-auto px-4 py-16 flex-grow flex items-center justify-center">
+        <div className="card max-w-2xl text-center space-y-6 animate-fade-in">
+          <h1 className="text-4xl font-extrabold text-blue-800 dark:text-blue-400">
+            Welcome to RoomMate
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+            Connect, Collaborate, and Create Meaningful Connections
           </p>
-        </Link>
-
-        <Link 
-          href="/profile" 
-          style={{ 
-            backgroundColor: "white", 
-            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-            borderRadius: "0.5rem",
-            padding: "1.5rem",
-            transition: "box-shadow 0.3s ease"
-          }}
-        >
-          <h2 style={{ fontSize: "1.25rem", fontWeight: "600", marginBottom: "1rem" }}>Profile Settings</h2>
-          <p style={{ color: "#6B7280" }}>
-            Update your profile and account settings
-          </p>
-        </Link>
-      </div>
+          <div className="flex justify-center space-x-4">
+            <Link href="/auth/signin" className="btn btn-primary">
+              Sign In
+            </Link>
+            <Link href="/auth/signup" className="btn btn-secondary">
+              Sign Up
+            </Link>
+          </div>
+          <div className="grid grid-cols-3 gap-4 mt-8">
+            <div className="bg-blue-100 dark:bg-gray-700 p-4 rounded-lg">
+              <h3 className="text-blue-700 dark:text-blue-300 mb-2">Connect</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Find like-minded roommates
+              </p>
+            </div>
+            <div className="bg-green-100 dark:bg-gray-700 p-4 rounded-lg">
+              <h3 className="text-green-700 dark:text-green-300 mb-2">Collaborate</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Share spaces and experiences
+              </p>
+            </div>
+            <div className="bg-purple-100 dark:bg-gray-700 p-4 rounded-lg">
+              <h3 className="text-purple-700 dark:text-purple-300 mb-2">Communicate</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                Chat and plan together
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
