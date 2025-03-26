@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { TrashIcon } from '@heroicons/react/24/solid';
 
 interface Topic {
-  id: number;
+  id: string;  // Changed to string to match Prisma model
   title: string;
   description?: string;
 }
@@ -15,6 +16,10 @@ export default function Topics() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const getTopicColor = (index: number) => {
+    const colors = ['blue', 'purple', 'green', 'teal', 'indigo', 'pink'];
+    return colors[index % colors.length];
+  };
 
   useEffect(() => {
     const fetchTopics = async () => {
@@ -38,9 +43,31 @@ export default function Topics() {
     fetchTopics();
   }, [session]);
 
-  const getTopicColor = (index: number) => {
-    const colors = ['blue', 'purple', 'green', 'teal', 'indigo', 'pink'];
-    return colors[index % colors.length];
+  const handleDeleteTopic = async (topicId: string, event: React.MouseEvent) => {
+    // Prevent link navigation when clicking delete
+    event.preventDefault();
+    
+    if (!session) return;
+
+    const confirmDelete = window.confirm('Are you sure you want to delete this topic? All associated chatrooms will also be deleted.');
+    
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`/api/topics/${topicId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete topic');
+      }
+
+      // Remove the deleted topic from the list
+      setTopics(topics.filter(topic => topic.id !== topicId));
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to delete topic';
+      setError(errorMessage);
+    }
   };
 
   if (isLoading) {
@@ -80,27 +107,38 @@ export default function Topics() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {topics.map((topic, index) => (
-              <Link 
+              <div 
                 key={topic.id} 
-                href={`/topics/${topic.id}/chatrooms`} 
-                className="transform transition-all duration-300 hover:scale-105"
+                className="relative transform transition-all duration-300 hover:scale-105"
               >
-                <div className={`card bg-${getTopicColor(index)}-100 dark:bg-gray-700 hover:shadow-lg p-6 rounded-lg`}>
-                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-${getTopicColor(index)}-200 dark:bg-gray-600 flex items-center justify-center`}>
-                    <span className={`text-2xl text-${getTopicColor(index)}-600 dark:text-${getTopicColor(index)}-400`}>
-                      {topic.title.charAt(0)}
-                    </span>
+                <Link 
+                  href={`/topics/${topic.id}/chatrooms`} 
+                  className="block"
+                >
+                  <div className={`card bg-${getTopicColor(index)}-100 dark:bg-gray-700 hover:shadow-lg p-6 rounded-lg`}>
+                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-${getTopicColor(index)}-200 dark:bg-gray-600 flex items-center justify-center`}>
+                      <span className={`text-2xl text-${getTopicColor(index)}-600 dark:text-${getTopicColor(index)}-400`}>
+                        {topic.title.charAt(0)}
+                      </span>
+                    </div>
+                    <h3 className={`text-center text-xl font-semibold text-${getTopicColor(index)}-800 dark:text-${getTopicColor(index)}-300 mb-2`}>
+                      {topic.title}
+                    </h3>
+                    {topic.description && (
+                      <p className="text-center text-gray-600 dark:text-gray-300 text-sm">
+                        {topic.description}
+                      </p>
+                    )}
                   </div>
-                  <h3 className={`text-center text-xl font-semibold text-${getTopicColor(index)}-800 dark:text-${getTopicColor(index)}-300 mb-2`}>
-                    {topic.title}
-                  </h3>
-                  {topic.description && (
-                    <p className="text-center text-gray-600 dark:text-gray-300 text-sm">
-                      {topic.description}
-                    </p>
-                  )}
-                </div>
-              </Link>
+                </Link>
+                <button 
+                  onClick={(e) => handleDeleteTopic(topic.id, e)}
+                  className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
+                  title="Delete Topic"
+                >
+                  <TrashIcon className="h-5 w-5" />
+                </button>
+              </div>
             ))}
           </div>
         )}
