@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     }
 
     // Verify the topic belongs to the user
-    const topic = await prisma.topic.findUnique({
+    const topic = await prisma.topic.findFirst({
       where: {
         id: topicId,
         userId: session.user.id,
@@ -81,7 +81,7 @@ export async function GET(request: Request) {
     }
 
     // Verify the topic belongs to the user
-    const topic = await prisma.topic.findUnique({
+    const topic = await prisma.topic.findFirst({
       where: {
         id: topicId,
         userId: session.user.id,
