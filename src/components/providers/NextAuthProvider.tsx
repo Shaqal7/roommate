@@ -8,5 +8,9 @@ interface NextAuthProviderProps {
 }
 
 export default function NextAuthProvider({ children }: NextAuthProviderProps) {
-  return <SessionProvider>{children}</SessionProvider>;
+  return (
+    <SessionProvider refetchInterval={5 * 60} refetchOnWindowFocus={true}>
+      {children}
+    </SessionProvider>
+  );
 }

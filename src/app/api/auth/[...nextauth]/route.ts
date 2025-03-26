@@ -57,17 +57,23 @@ export const authOptions: NextAuthOptions = {
   },
   debug: process.env.NODE_ENV === "development",
   session: {
-    strategy: "jwt",
+    strategy: "jwt", // Ensure JWT strategy for stateless authentication
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  jwt: {
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, token }) {
+      // Add user ID to session
       if (token && session.user) {
         session.user.id = token.id as string;
       }
       return session;
     },
     async jwt({ token, user }) {
+      // Add user ID to token on first login
       if (user) {
         token.id = user.id;
       }

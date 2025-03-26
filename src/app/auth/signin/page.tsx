@@ -1,13 +1,51 @@
+'use client';
+
 import Link from 'next/link';
+import { useState, FormEvent } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        // Redirect to topics page on successful login
+        router.push('/topics');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred');
+      console.error('Login error:', err);
+    }
+  };
+
   return (
     <div className="full-height bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
       <div className="card w-full max-w-md p-8 space-y-6 animate-fade-in">
         <h1 className="text-center text-2xl font-bold text-blue-800 dark:text-blue-400">
           Sign In to RoomMate
         </h1>
-        <form className="space-y-4">
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            {error}
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Email Address
@@ -17,6 +55,8 @@ export default function SignIn() {
               id="email" 
               className="input" 
               placeholder="Enter your email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required 
             />
           </div>
@@ -29,6 +69,8 @@ export default function SignIn() {
               id="password" 
               className="input" 
               placeholder="Enter your password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required 
             />
           </div>
