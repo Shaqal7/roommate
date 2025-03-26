@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { TrashIcon } from '@heroicons/react/24/solid';
+import { useRouter } from 'next/navigation';
 
 interface Topic {
   id: string;  // Changed to string to match Prisma model
@@ -12,7 +13,8 @@ interface Topic {
 }
 
 export default function Topics() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +24,12 @@ export default function Topics() {
   };
 
   useEffect(() => {
+    // Redirect to signin if not authenticated
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin');
+      return;
+    }
+    
     const fetchTopics = async () => {
       if (!session) return;
 

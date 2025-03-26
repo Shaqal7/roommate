@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import AiResponseRenderer from "@/components/ui/AiResponseRenderer";
 
 interface Message {
@@ -38,11 +39,18 @@ export default function TopicChatroomPage() {
   const params = useParams();
   const topicId = params.topicId as string;
   const chatroomId = params.chatroomId as string;
+  const { status } = useSession();
 
   useEffect(() => {
+    // Redirect to signin if not authenticated
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin');
+      return;
+    }
+    
     fetchChatroomDetails();
     fetchMessages();
-  }, [chatroomId]);
+  }, [chatroomId, status, router]);
 
   useEffect(() => {
     scrollToBottom();

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 interface Chatroom {
   id: string;
@@ -12,7 +12,8 @@ interface Chatroom {
 }
 
 export default function TopicChatrooms() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const params = useParams();
   const topicId = params.topicId as string;
 
@@ -22,6 +23,12 @@ export default function TopicChatrooms() {
   const [topicTitle, setTopicTitle] = useState<string>('');
 
   useEffect(() => {
+    // Redirect to signin if not authenticated
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin');
+      return;
+    }
+    
     const fetchTopicChatrooms = async () => {
       if (!session || !topicId) return;
 

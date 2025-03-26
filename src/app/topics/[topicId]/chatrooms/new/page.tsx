@@ -1,14 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function NewChatroom() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const params = useParams();
   const router = useRouter();
   const topicId = params.topicId as string;
+  
+  useEffect(() => {
+    // Redirect to signin if not authenticated
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin');
+    }
+  }, [status, router]);
 
   const [name, setName] = useState('');
   const [aiModel, setAiModel] = useState('claude');
