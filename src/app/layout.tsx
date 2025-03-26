@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NextAuthProvider from "@/components/providers/NextAuthProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import ActionBar from "@/components/ActionBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,7 +42,6 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
-            <ActionBar />
           </ThemeProvider>
         </NextAuthProvider>
       </body>
