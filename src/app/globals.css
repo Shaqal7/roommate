@@ -4,6 +4,7 @@
 body {
   @apply min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  padding-bottom: 80px; /* Ensure content is not hidden behind the fixed ActionBar */
 }
 
 /* Improved scrollbar for dark and light modes */
