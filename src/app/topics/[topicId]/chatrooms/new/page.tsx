@@ -51,8 +51,8 @@ export default function NewChatroom() {
 
       const newChatroom = await response.json();
       
-      // Redirect to the newly created chatroom
-      router.push(`/chatrooms/${newChatroom.id}`);
+      // Redirect to the newly created chatroom within the topic
+      router.push(`/topics/${topicId}/chatrooms/${newChatroom.id}`);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
       setIsSubmitting(false);

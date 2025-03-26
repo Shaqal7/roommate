@@ -85,7 +85,7 @@ export default function TopicChatrooms() {
             {chatrooms.map((chatroom) => (
               <Link 
                 key={chatroom.id} 
-                href={`/chatrooms/${chatroom.id}`} 
+                href={`/topics/${topicId}/chatrooms/${chatroom.id}`} 
                 className="transform transition-all duration-300 hover:scale-105"
               >
                 <div className="card bg-white dark:bg-gray-700 hover:shadow-lg p-6 rounded-lg">

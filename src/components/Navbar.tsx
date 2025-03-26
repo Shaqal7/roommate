@@ -9,7 +9,6 @@ export default function Navbar() {
 
   const navItems = [
     { href: '/topics', label: 'Topics' },
-    { href: '/chatrooms', label: 'Chatrooms' },
     { href: '/profile', label: 'Profile' },
   ];
 
