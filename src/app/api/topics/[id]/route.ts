@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 
 // Get a specific topic with its chatrooms
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -18,9 +18,11 @@ export async function GET(
       );
     }
 
+    const { id } = await Promise.resolve(context.params);
+
     const topic = await prisma.topic.findUnique({
       where: {
-        id: params.id,
+        id,
         userId: session.user.id,
       },
       include: {
