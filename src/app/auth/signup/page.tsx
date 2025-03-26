@@ -1,13 +1,67 @@
+'use client';
+
 import Link from 'next/link';
+import { useState, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError('');
+
+    // Basic validation
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Redirect to sign-in page or dashboard
+        router.push('/auth/signin');
+      } else {
+        // Handle error from server
+        setError(data.message || 'Registration failed');
+      }
+    } catch (err) {
+      setError('Network error. Please try again.');
+      console.error('Registration error:', err);
+    }
+  };
+
   return (
     <div className="full-height bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
       <div className="card w-full max-w-md p-8 space-y-6 animate-fade-in">
         <h1 className="text-center text-2xl font-bold text-blue-800 dark:text-blue-400">
           Create Your RoomMate Account
         </h1>
-        <form className="space-y-4">
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            {error}
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Full Name
@@ -17,6 +71,8 @@ export default function SignUp() {
               id="name" 
               className="input" 
               placeholder="Enter your full name" 
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required 
             />
           </div>
@@ -29,6 +85,8 @@ export default function SignUp() {
               id="email" 
               className="input" 
               placeholder="Enter your email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required 
             />
           </div>
@@ -41,6 +99,8 @@ export default function SignUp() {
               id="password" 
               className="input" 
               placeholder="Create a strong password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required 
             />
           </div>
@@ -53,6 +113,8 @@ export default function SignUp() {
               id="confirm-password" 
               className="input" 
               placeholder="Repeat your password" 
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               required 
             />
           </div>
