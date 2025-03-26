@@ -89,7 +89,7 @@ export async function POST(request: Request) {
       case "claude":
         const claudeResponse = await anthropic.messages.create({
           model: "claude-3-5-sonnet-20241022",
-          max_tokens: 300,
+          max_tokens: 1500,
           messages: [
             { role: "user", content: `Context:\n${context}\n\nUser: ${content}` },
           ],
