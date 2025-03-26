@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="full-height bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="h-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
       <main className="container mx-auto px-4 py-16 flex-grow flex items-center justify-center">
         <div className="card max-w-2xl text-center space-y-6 animate-fade-in">
           <h1 className="text-4xl font-extrabold text-blue-800 dark:text-blue-400">
