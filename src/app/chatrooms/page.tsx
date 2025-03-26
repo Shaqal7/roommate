@@ -37,8 +37,8 @@ export default function Chatrooms() {
   ];
 
   return (
-    <div className="full-height bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
-      <main className="container mx-auto px-4 py-16 flex-grow">
+    <div className="h-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
+      <main className="container mx-auto px-4 py-6 flex-grow">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-blue-800 dark:text-blue-400 mb-4">
             Explore Chatrooms

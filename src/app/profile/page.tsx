@@ -11,8 +11,8 @@ export default async function Profile() {
   }
 
   return (
-    <div className="full-height bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
-      <main className="container mx-auto px-4 py-16 flex-grow">
+    <div className="h-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
+      <main className="container mx-auto px-4 py-6 flex-grow">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-1">
             <div className="card space-y-4 text-center">
