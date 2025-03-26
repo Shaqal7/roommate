@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 
 // Get a specific chatroom
 export async function GET(
-  request: Request, 
-  { params }: { params: { id: string } }
+  request: NextRequest, 
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -18,9 +18,11 @@ export async function GET(
       );
     }
 
+    const { id } = await Promise.resolve(context.params);
+
     const chatroom = await prisma.chatroom.findUnique({
       where: {
-        id: params.id,
+        id,
         topic: {
           userId: session.user.id,
         },
@@ -55,8 +57,8 @@ export async function GET(
 
 // Update a specific chatroom
 export async function PUT(
-  request: Request, 
-  { params }: { params: { id: string } }
+  request: NextRequest, 
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -78,9 +80,11 @@ export async function PUT(
       );
     }
 
+    const { id } = await Promise.resolve(context.params);
+
     const updatedChatroom = await prisma.chatroom.update({
       where: {
-        id: params.id,
+        id,
         topic: {
           userId: session.user.id,
         },
@@ -103,8 +107,8 @@ export async function PUT(
 
 // Delete a specific chatroom
 export async function DELETE(
-  request: Request, 
-  { params }: { params: { id: string } }
+  request: NextRequest, 
+  context: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -116,9 +120,11 @@ export async function DELETE(
       );
     }
 
+    const { id } = await Promise.resolve(context.params);
+
     await prisma.chatroom.delete({
       where: {
-        id: params.id,
+        id,
         topic: {
           userId: session.user.id,
         },
