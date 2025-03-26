@@ -1,9 +1,10 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function LogoutButton() {
+  const { data: session } = useSession();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -13,6 +14,9 @@ export default function LogoutButton() {
     // Redirect to signin page after logout
     router.push('/auth/signin');
   };
+
+  // Only render the logout button if a session exists
+  if (!session) return null;
 
   return (
     <button 
