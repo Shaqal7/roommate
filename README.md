@@ -83,7 +83,7 @@ npm run dev
 
 ## Deployment
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyourusername%2Froommate)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%shaqal7%2Froommate)
 
 ## Contributing
 
@@ -99,6 +99,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - [your-email@example.com](mailto:your-email@example.com)
+Your Name - [shaqal7@gmail.com](mailto:shaqal7@gmail.com)
 
-Project Link: [https://github.com/yourusername/roommate](https://github.com/yourusername/roommate)
+Project Link: [https://github.com/shaqal7/roommate](https://github.com/shaqal7/roommate)
