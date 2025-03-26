@@ -16,25 +16,25 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { title, description } = body;
+const { name, description } = body;
 
-    if (!title) {
+    if (!name) {
       return NextResponse.json(
-        { message: "Title is required" },
+        { message: "Topic name is required" },
         { status: 400 }
       );
     }
 
     const topic = await prisma.topic.create({
       data: {
-        title,
+        title: name,
         description,
         userId: session.user.id,
       },
     });
 
     return NextResponse.json(topic, { status: 201 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Topic creation error:", error);
     return NextResponse.json(
       { message: "Something went wrong" },
@@ -68,7 +68,7 @@ export async function GET() {
     });
 
     return NextResponse.json(topics);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Topics retrieval error:", error);
     return NextResponse.json(
       { message: "Something went wrong" },
