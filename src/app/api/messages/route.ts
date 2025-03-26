@@ -35,15 +35,15 @@ export async function POST(request: Request) {
     const chatroom = await prisma.chatroom.findUnique({
       where: {
         id: chatroomId,
-        topic: {
-          userId: session.user.id,
-        },
+      },
+      include: {
+        topic: true,
       },
     });
 
-    if (!chatroom) {
+    if (!chatroom || chatroom.topic.userId !== session.user.id) {
       return NextResponse.json(
-        { message: "Chatroom not found" },
+        { message: "Chatroom not found or unauthorized" },
         { status: 404 }
       );
     }
@@ -94,7 +94,9 @@ export async function POST(request: Request) {
             { role: "user", content: `Context:\n${context}\n\nUser: ${content}` },
           ],
         });
-        aiResponse = claudeResponse.content[0].text || "I'm not sure how to respond.";
+        aiResponse = claudeResponse.content[0].type === 'text' 
+          ? claudeResponse.content[0].text 
+          : "I'm not sure how to respond.";
         break;
 
       default:
@@ -154,15 +156,15 @@ export async function GET(request: Request) {
     const chatroom = await prisma.chatroom.findUnique({
       where: {
         id: chatroomId,
-        topic: {
-          userId: session.user.id,
-        },
+      },
+      include: {
+        topic: true,
       },
     });
 
-    if (!chatroom) {
+    if (!chatroom || chatroom.topic.userId !== session.user.id) {
       return NextResponse.json(
-        { message: "Chatroom not found" },
+        { message: "Chatroom not found or unauthorized" },
         { status: 404 }
       );
     }

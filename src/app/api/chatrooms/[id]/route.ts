@@ -23,9 +23,6 @@ export async function GET(
     const chatroom = await prisma.chatroom.findUnique({
       where: {
         id,
-        topic: {
-          userId: session.user.id,
-        },
       },
       include: {
         topic: true,
@@ -38,9 +35,9 @@ export async function GET(
       },
     });
 
-    if (!chatroom) {
+    if (!chatroom || chatroom.topic.userId !== session.user.id) {
       return NextResponse.json(
-        { message: "Chatroom not found" },
+        { message: "Chatroom not found or unauthorized" },
         { status: 404 }
       );
     }
@@ -82,12 +79,26 @@ export async function PUT(
 
     const { id } = await Promise.resolve(context.params);
 
+    // First, verify the chatroom belongs to the user
+    const existingChatroom = await prisma.chatroom.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        topic: true,
+      },
+    });
+
+    if (!existingChatroom || existingChatroom.topic.userId !== session.user.id) {
+      return NextResponse.json(
+        { message: "Chatroom not found or unauthorized" },
+        { status: 404 }
+      );
+    }
+
     const updatedChatroom = await prisma.chatroom.update({
       where: {
         id,
-        topic: {
-          userId: session.user.id,
-        },
       },
       data: {
         name,
@@ -122,12 +133,26 @@ export async function DELETE(
 
     const { id } = await Promise.resolve(context.params);
 
+    // First, verify the chatroom belongs to the user
+    const existingChatroom = await prisma.chatroom.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        topic: true,
+      },
+    });
+
+    if (!existingChatroom || existingChatroom.topic.userId !== session.user.id) {
+      return NextResponse.json(
+        { message: "Chatroom not found or unauthorized" },
+        { status: 404 }
+      );
+    }
+
     await prisma.chatroom.delete({
       where: {
         id,
-        topic: {
-          userId: session.user.id,
-        },
       },
     });
 
