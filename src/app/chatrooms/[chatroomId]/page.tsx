@@ -60,8 +60,8 @@ export default function ChatroomPage() {
 
       const data = await response.json();
       setChatroom(data);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
     }
   };
 
@@ -80,8 +80,8 @@ export default function ChatroomPage() {
       const data = await response.json();
       setMessages(data.messages);
       setIsLoading(false);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
       setIsLoading(false);
     }
   };
@@ -114,8 +114,8 @@ export default function ChatroomPage() {
       const { userMessage, aiMessage } = await response.json();
       setMessages(prevMessages => [...prevMessages, userMessage, aiMessage]);
       setNewMessage("");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       setIsSendingMessage(false);
     }
@@ -147,7 +147,7 @@ export default function ChatroomPage() {
           </p>
         </div>
         <button 
-          onClick={() => router.push(`/topics/${chatroom.topic.id}`)}
+          onClick={() => router.push(`/topics/${chatroom.topic.id}/chatrooms`)}
           className="text-blue-600 dark:text-blue-400 hover:underline"
         >
           Back to Topic
