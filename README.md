@@ -69,6 +69,12 @@ OPENAI_API_KEY=""
 npx prisma migrate dev
 ```
 
+#### Check prisma tables
+
+```bash
+npx prisma studio
+```
+
 5. Run the development server
 
 ```bash

@@ -119,3 +119,76 @@ pre code {
   white-space: pre;
   overflow: visible;
 }
+
+/* Chat-specific markdown styles */
+.markdown-chat-bubble .markdown-container {
+  color: inherit;
+}
+
+.markdown-chat-bubble pre {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.markdown-chat-bubble code {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: inherit;
+}
+
+.markdown-chat-bubble .markdown-p {
+  margin-bottom: 0.5rem;
+}
+
+.markdown-chat-bubble .markdown-h1,
+.markdown-chat-bubble .markdown-h2,
+.markdown-chat-bubble .markdown-h3,
+.markdown-chat-bubble .markdown-h4 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  border-bottom: none;
+}
+
+.markdown-chat-bubble .markdown-h1 {
+  font-size: 1.5rem;
+}
+
+.markdown-chat-bubble .markdown-h2 {
+  font-size: 1.25rem;
+}
+
+.markdown-chat-bubble .markdown-h3 {
+  font-size: 1.1rem;
+}
+
+.markdown-chat-bubble .markdown-blockquote {
+  border-left: 3px solid rgba(0, 0, 0, 0.2);
+  padding-left: 0.75rem;
+  margin: 0.5rem 0;
+}
+
+.markdown-chat-bubble .markdown-ul,
+.markdown-chat-bubble .markdown-ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.markdown-chat-bubble .markdown-table {
+  font-size: 0.9rem;
+}
+
+/* Dark mode adjustments */
+.dark .markdown-chat-bubble pre,
+.dark .markdown-chat-bubble code {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .markdown-chat-bubble .markdown-blockquote {
+  border-left-color: rgba(255, 255, 255, 0.2);
+}

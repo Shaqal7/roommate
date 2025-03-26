@@ -11,10 +11,20 @@
 export function formatAiResponse(text: string): string {
   if (!text) return '';
   
+  // Detect and format inline code blocks (single backticks)
+  let formattedText = text.replace(/`([^`]+)`/g, (match) => {
+    return match; // Preserve inline code blocks
+  });
+  
   // Ensure code blocks are properly formatted
-  let formattedText = text.replace(/```(\w*)\n([\s\S]*?)```/g, (match, language, code) => {
+  formattedText = formattedText.replace(/```(\w*)\n([\s\S]*?)```/g, (match, language, code) => {
     // Ensure there's a newline before and after code blocks
     return `\n\`\`\`${language}\n${code.trim()}\n\`\`\`\n`;
+  });
+  
+  // Handle code blocks without language specification
+  formattedText = formattedText.replace(/```\n([\s\S]*?)```/g, (match, code) => {
+    return `\n\`\`\`\n${code.trim()}\n\`\`\`\n`;
   });
   
   // Ensure proper spacing for headings
@@ -51,6 +61,7 @@ export function containsMarkdown(text: string): boolean {
   const markdownPatterns = [
     /^#{1,6}\s+.+$/m,                  // Headers
     /`{3}[\s\S]*?`{3}/,                // Code blocks
+    /`[^`]+`/,                         // Inline code
     /!\[.*?\]\(.*?\)/,                 // Images
     /\[.*?\]\(.*?\)/,                  // Links
     /^[-*+]\s+.+$/m,                   // Unordered lists

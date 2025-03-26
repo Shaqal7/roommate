@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
+import AiResponseRenderer from "@/components/ui/AiResponseRenderer";
 
 interface Message {
   id: string;
@@ -165,11 +166,15 @@ export default function ChatroomPage() {
             <div 
               className={`max-w-[70%] p-3 rounded-lg ${
                 message.isAi 
-                  ? "bg-gray-200 dark:bg-gray-700" 
+                  ? "bg-gray-200 dark:bg-gray-700 markdown-chat-bubble" 
                   : "bg-blue-500 text-white"
               }`}
             >
-              <p>{message.content}</p>
+              {message.isAi ? (
+                <AiResponseRenderer content={message.content} />
+              ) : (
+                <p>{message.content}</p>
+              )}
               {!message.isAi && message.user && (
                 <div className="text-xs text-gray-300 mt-1">
                   {message.user.name}
