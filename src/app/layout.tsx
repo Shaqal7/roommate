@@ -34,7 +34,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       suppressHydrationWarning
     >
-      <body>
+      <body className="full-height">
         <NextAuthProvider>
           <ThemeProvider
             attribute="class"
@@ -42,8 +42,12 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
-            {children}
+            <div className="flex flex-col h-screen overflow-hidden">
+              <Navbar />
+              <main className="flex-grow container mx-auto px-4 py-3 overflow-auto">
+                {children}
+              </main>
+            </div>
           </ThemeProvider>
         </NextAuthProvider>
       </body>

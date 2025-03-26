@@ -138,7 +138,7 @@ export default function ChatroomPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full">
       <div className="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">{chatroom.name}</h1>

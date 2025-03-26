@@ -76,5 +76,5 @@ h3 { @apply text-xl font-medium mb-2 dark:text-gray-200; }
 
 /* Utility for full-height layouts */
 .full-height {
-  @apply min-h-screen flex flex-col;
+  @apply min-h-screen flex flex-col overflow-x-hidden;
 }
